@@ -1,0 +1,36 @@
+{% extends 'store/base.html' %}
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">🧾 My Orders</h2>
+
+  {% if orders %}
+    {% for order in orders %}
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <strong>Order #{{ order.id }}</strong> — Placed on {{ order.created_at|date:"M d, Y H:i" }} — Total: ₹{{ order.total }}
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for item in order.items.all %}
+              <li class="list-group-item d-flex justify-content-between">
+                <div>
+                  {{ item.quantity }} × {{ item.product.name }}
+                </div>
+                <div>
+                  ₹{{ item.price|floatformat:2 }} each
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="alert alert-info text-center">
+      You haven't placed any orders yet.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
